@@ -1,0 +1,84 @@
+{% extends 'clientes/base.html' %}
+{% block title %}{{ title }} | Sistema Funerario{% endblock %}
+{% block content %}
+<header class="page-header compact">
+  <div><span class="eyebrow">Ficha de cliente</span><h1>{{ title }}</h1><p>Sólo nombre y RUT son obligatorios.</p></div>
+  {% if client %}<a class="btn btn-secondary" href="{% url 'clientes:detail' client.pk %}">Volver a la ficha</a>{% else %}<a class="btn btn-secondary" href="{% url 'clientes:list' %}">Cancelar</a>{% endif %}
+</header>
+
+<form method="post" class="client-form">
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="message error">{{ form.non_field_errors }}</div>{% endif %}
+
+  <section class="form-section">
+    <h2>Datos del contratante</h2>
+    <div class="form-grid">
+      {% include 'clientes/_field.html' with field=form.name span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.rut span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.phone span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.address span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.email span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.occupation span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.relationship span='span-3' %}
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h2>Datos del fallecido</h2>
+    <div class="form-grid">
+      {% include 'clientes/_field.html' with field=form.deceased_name span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.deceased_rut span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.age span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.deceased_address span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.birth_place span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.marital_status span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.education span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.insurance span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.birth_date span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.death_date span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.death_time span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.death_place span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.registration_place span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.parents span='span-6' %}
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h2>Servicio y ceremonia</h2>
+    <div class="form-grid">
+      {% include 'clientes/_field.html' with field=form.urn_type span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.cemetery_transfer span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.wake_place span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.mass_date span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.mass_time span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.church span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.automobile span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.automobile_paid_by span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.minibus span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.minibus_paid_by span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.service_description span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.service_net span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.vat_rate span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.seller_name span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.contract_place span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.contract_date span='span-3' %}
+    </div>
+  </section>
+
+  <section class="form-section">
+    <h2>Entrega de documentos</h2>
+    <div class="form-grid">
+      {% include 'clientes/_field.html' with field=form.documents_recipient span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.documents_relationship span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.documents_date span='span-3' %}
+      {% include 'clientes/_field.html' with field=form.documents_detail span='span-6' %}
+      {% include 'clientes/_field.html' with field=form.observations span='span-6' %}
+    </div>
+  </section>
+
+  <div class="sticky-actions">
+    <span>Los cambios se guardan en la base de datos.</span>
+    <button class="btn btn-primary" type="submit">Guardar ficha</button>
+  </div>
+</form>
+{% endblock %}

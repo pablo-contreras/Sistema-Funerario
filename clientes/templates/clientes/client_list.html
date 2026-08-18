@@ -1,0 +1,40 @@
+{% extends 'clientes/base.html' %}
+{% load client_tags %}
+{% block title %}Clientes | Sistema Funerario{% endblock %}
+{% block content %}
+<header class="page-header">
+  <div><span class="eyebrow">Registro general</span><h1>Clientes</h1><p>{{ total_clients }} ficha{{ total_clients|pluralize }} registrada{{ total_clients|pluralize }}.</p></div>
+  <a class="btn btn-primary" href="{% url 'clientes:create' %}">+ Nueva ficha</a>
+</header>
+
+<section class="card search-card">
+  <form method="get" class="search-form">
+    <input class="form-control" type="search" name="q" value="{{ query }}" placeholder="Buscar por RUT, nombre, fallecido o folio" autofocus>
+    <button class="btn btn-primary" type="submit">Buscar</button>
+    {% if query %}<a class="btn btn-secondary" href="{% url 'clientes:list' %}">Limpiar</a>{% endif %}
+  </form>
+</section>
+
+<section class="card table-card">
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Folio</th><th>Contratante</th><th>RUT</th><th>Fallecido</th><th>Total</th><th>Saldo</th><th></th></tr></thead>
+      <tbody>
+        {% for client in clients %}
+          <tr>
+            <td><span class="folio">{{ client.folio }}</span></td>
+            <td><strong>{{ client.name }}</strong><small>{{ client.phone|default:'Sin teléfono' }}</small></td>
+            <td>{{ client.rut }}</td>
+            <td>{{ client.deceased_name|default:'—' }}</td>
+            <td>{{ client.service_total|clp }}</td>
+            <td><span class="badge {% if client.balance > 0 %}badge-warning{% else %}badge-success{% endif %}">{{ client.balance|clp }}</span></td>
+            <td class="actions"><a href="{% url 'clientes:detail' client.pk %}">Ver</a><a href="{% url 'clientes:update' client.pk %}">Editar</a></td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="7" class="empty-state">No se encontraron clientes{% if query %} para “{{ query }}”{% endif %}.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+{% endblock %}

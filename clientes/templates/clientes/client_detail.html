@@ -1,0 +1,86 @@
+{% extends 'clientes/base.html' %}
+{% load client_tags %}
+{% block title %}{{ client.name }} | Sistema Funerario{% endblock %}
+{% block content %}
+<header class="page-header detail-header">
+  <div><span class="eyebrow">{{ client.folio }}</span><h1>{{ client.name }}</h1><p>RUT {{ client.rut }} · Actualizado {{ client.updated_at|date:'d/m/Y H:i' }}</p></div>
+  <div class="header-actions">
+    <a class="btn btn-secondary" href="{% url 'clientes:update' client.pk %}">Editar</a>
+    <a class="btn btn-secondary" target="_blank" href="{% url 'clientes:contract_print' client.pk %}">Imprimir</a>
+    <a class="btn btn-primary" href="{% url 'clientes:contract_pdf' client.pk %}">Descargar PDF</a>
+  </div>
+</header>
+
+<section class="stats-grid">
+  <article class="stat"><small>Total servicio</small><strong>{{ client.service_total|clp }}</strong></article>
+  <article class="stat"><small>Total pagado</small><strong>{{ client.paid_total|clp }}</strong></article>
+  <article class="stat {% if client.balance > 0 %}due{% endif %}"><small>Saldo pendiente</small><strong>{{ client.balance|clp }}</strong></article>
+  <article class="stat"><small>Archivos</small><strong>{{ client.documents.count }}</strong></article>
+</section>
+
+<div class="detail-grid">
+  <section class="card info-card">
+    <div class="card-title"><h2>Resumen de la ficha</h2><a href="{% url 'clientes:update' client.pk %}">Editar datos</a></div>
+    <dl class="data-list">
+      <div><dt>Teléfono</dt><dd>{{ client.phone|default:'—' }}</dd></div>
+      <div><dt>Correo</dt><dd>{{ client.email|default:'—' }}</dd></div>
+      <div><dt>Domicilio</dt><dd>{{ client.address|default:'—' }}</dd></div>
+      <div><dt>Fallecido</dt><dd>{{ client.deceased_name|default:'—' }}</dd></div>
+      <div><dt>Fecha fallecimiento</dt><dd>{{ client.death_date|date:'d/m/Y'|default:'—' }}</dd></div>
+      <div><dt>Lugar velación</dt><dd>{{ client.wake_place|default:'—' }}</dd></div>
+      <div><dt>Tipo de urna</dt><dd>{{ client.urn_type|default:'—' }}</dd></div>
+      <div><dt>Vendedor</dt><dd>{{ client.seller_name|default:'—' }}</dd></div>
+    </dl>
+  </section>
+
+  <aside class="card quick-card">
+    <h2>Contrato</h2>
+    <p>Vista A4 basada en el documento original, con los datos de esta ficha.</p>
+    <a class="btn btn-primary btn-block" href="{% url 'clientes:contract_pdf' client.pk %}">Descargar en PDF</a>
+    <a class="btn btn-secondary btn-block" target="_blank" href="{% url 'clientes:contract_print' client.pk %}">Abrir para imprimir</a>
+  </aside>
+</div>
+
+<section class="card section-card" id="pagos">
+  <div class="card-title"><div><span class="eyebrow">Finanzas</span><h2>Registro de pagos</h2></div></div>
+  <form class="inline-form" method="post" action="{% url 'clientes:payment_create' client.pk %}">
+    {% csrf_token %}
+    {% for field in payment_form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endfor %}
+    <button class="btn btn-primary" type="submit">Registrar pago</button>
+  </form>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Fecha</th><th>Valor</th><th>N° recibo</th><th>Detalle</th><th></th></tr></thead>
+      <tbody>
+        {% for payment in client.payments.all %}
+          <tr><td>{{ payment.payment_date|date:'d/m/Y' }}</td><td><strong>{{ payment.amount|clp }}</strong></td><td>{{ payment.receipt_number|default:'—' }}</td><td>{{ payment.notes|default:'—' }}</td><td class="actions"><form method="post" action="{% url 'clientes:payment_delete' payment.pk %}" onsubmit="return confirm('¿Eliminar este pago?')">{% csrf_token %}<button class="link-danger" type="submit">Eliminar</button></form></td></tr>
+        {% empty %}<tr><td colspan="5" class="empty-state">Todavía no hay pagos registrados.</td></tr>{% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="card section-card" id="archivos">
+  <div class="card-title"><div><span class="eyebrow">Documentación</span><h2>Archivos del cliente</h2></div><small>Carpeta: {{ client.document_folder }}</small></div>
+  <form class="inline-form upload-form" method="post" enctype="multipart/form-data" action="{% url 'clientes:document_upload' client.pk %}">
+    {% csrf_token %}
+    {% for field in document_form %}<div><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}</div>{% endfor %}
+    <button class="btn btn-primary" type="submit">Subir archivo</button>
+  </form>
+  <div class="document-grid">
+    {% for document in client.documents.all %}
+      <article class="document-item">
+        <span class="file-icon">DOC</span>
+        <div><strong>{{ document.original_name }}</strong><small>{{ document.get_category_display }} · {{ document.uploaded_at|date:'d/m/Y H:i' }}</small></div>
+        <a href="{% url 'clientes:document_download' document.pk %}">Descargar</a>
+        <form method="post" action="{% url 'clientes:document_delete' document.pk %}" onsubmit="return confirm('¿Eliminar este archivo?')">{% csrf_token %}<button class="link-danger" type="submit">Eliminar</button></form>
+      </article>
+    {% empty %}<p class="empty-state">Aún no se han subido documentos.</p>{% endfor %}
+  </div>
+</section>
+
+<section class="danger-zone">
+  <div><strong>Eliminar ficha</strong><p>Esta acción elimina también pagos y documentos asociados.</p></div>
+  <form method="post" action="{% url 'clientes:delete' client.pk %}" onsubmit="return confirm('¿Eliminar definitivamente la ficha de {{ client.name|escapejs }}?')">{% csrf_token %}<button class="btn btn-danger" type="submit">Eliminar cliente</button></form>
+</section>
+{% endblock %}

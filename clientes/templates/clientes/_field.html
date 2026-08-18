@@ -1,0 +1,5 @@
+<div class="form-field {{ span|default:'span-4' }}">
+  <label for="{{ field.id_for_label }}">{{ field.label }}{% if field.field.required %}<span class="required">*</span>{% endif %}</label>
+  {{ field }}
+  {% for error in field.errors %}<small class="field-error">{{ error }}</small>{% endfor %}
+</div>

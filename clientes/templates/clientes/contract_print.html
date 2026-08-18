@@ -1,0 +1,162 @@
+{% load static client_tags %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Contrato {{ client.folio }}</title>
+  <style>
+    @page { size: A4; margin: 8mm; }
+    :root { --brand:#486348; --ink:#1f2937; --muted:#64748b; --line:#cbd5e1; --soft:#eef5ee; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:#e9ecef; color:var(--ink); font-family:Arial,sans-serif; font-size:10px; line-height:1.25; }
+    .print-toolbar { position:sticky; top:0; z-index:4; display:flex; justify-content:center; gap:8px; padding:10px; background:#17231a; }
+    .print-toolbar button,.print-toolbar a { border:0; border-radius:7px; padding:9px 14px; background:#fff; color:#273b29; font-weight:700; text-decoration:none; cursor:pointer; }
+    .print-toolbar .primary { background:#5f825e; color:#fff; }
+    .page { width:210mm; min-height:297mm; margin:12px auto; background:#fff; box-shadow:0 8px 24px rgba(15,23,42,.12); page-break-after:always; overflow:hidden; }
+    .page:last-child { page-break-after:auto; }
+    .masthead { display:flex; align-items:center; justify-content:space-between; background:linear-gradient(135deg,#587657,#30482f); color:#fff; padding:12mm 10mm 8mm; }
+    .brand { display:flex; align-items:center; gap:10px; }
+    .brand img { width:42px; height:42px; object-fit:contain; background:#fff; border-radius:8px; padding:4px; }
+    .brand h1 { margin:0 0 3px; font-size:17px; }
+    .brand small { color:#e3ebe3; font-size:9px; }
+    .facts { text-align:right; display:grid; gap:5px; }
+    .chip { background:rgba(255,255,255,.14); border-radius:12px; padding:5px 8px; }
+    .content { padding:7mm 9mm; }
+    .section { border:1.5px solid var(--brand); border-radius:8px; padding:8px; margin-bottom:8px; break-inside:avoid; }
+    .section-title { margin:0 0 6px; color:var(--brand); font-size:11px; text-transform:uppercase; letter-spacing:.3px; }
+    .fields { display:grid; grid-template-columns:repeat(12,1fr); gap:5px; }
+    .field { grid-column:span 3; min-height:34px; border:1px dashed var(--line); border-radius:5px; padding:4px 5px; background:#fcfcfc; }
+    .field.half { grid-column:span 6; }
+    .field.full { grid-column:span 12; }
+    .label { color:var(--muted); font-size:7px; text-transform:uppercase; margin-bottom:2px; }
+    .value { font-weight:700; min-height:12px; overflow-wrap:anywhere; }
+    table { width:100%; border-collapse:collapse; margin-top:7px; }
+    th,td { border:1px solid var(--line); padding:5px 6px; text-align:left; }
+    th { background:var(--soft); font-size:8px; text-transform:uppercase; }
+    .money { text-align:right; width:30mm; }
+    .total-row td { font-weight:700; background:#f8fafc; }
+    .signatures { display:grid; grid-template-columns:1fr 1fr; gap:25mm; margin:16mm 8mm 2mm; text-align:center; }
+    .signature { border-top:1px solid #475569; padding-top:4px; }
+    .legal { background:#f8fafc; border:1px solid var(--line); border-radius:6px; padding:7px; color:#475569; }
+    .place-date { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:6px; }
+    .line-item { border-bottom:1px dotted #94a3b8; padding:5px 2px; min-height:22px; }
+    .payment-summary { display:flex; justify-content:flex-end; gap:15px; margin-top:8px; font-weight:700; }
+    .observations { min-height:45px; border:1px dashed var(--line); border-radius:6px; padding:6px; margin-top:8px; }
+    @media print {
+      body { background:#fff; }
+      .print-toolbar { display:none; }
+      .page { margin:0; box-shadow:none; }
+    }
+  </style>
+</head>
+<body>
+{% if not pdf_mode %}
+  <div class="print-toolbar">
+    <button class="primary" onclick="window.print()">Imprimir en Chrome</button>
+    <a href="{% url 'clientes:contract_pdf' client.pk %}">Descargar PDF</a>
+    <button onclick="window.close()">Cerrar</button>
+  </div>
+{% endif %}
+
+<article class="page">
+  <header class="masthead">
+    <div class="brand"><img src="{% if pdf_mode %}{{ logo_uri }}{% else %}{% static 'img/logo.png' %}{% endif %}" alt="Logo"><div><h1>Contrato de Servicios Funerarios</h1><small>Ficha y condiciones del servicio</small></div></div>
+    <div class="facts"><span class="chip">Folio: {{ client.folio }}</span><span class="chip">Fecha: {{ client.contract_date|date:'d/m/Y'|default:'—' }}</span></div>
+  </header>
+  <main class="content">
+    <section class="section">
+      <h2 class="section-title">Datos del contratante</h2>
+      <div class="fields">
+        <div class="field half"><div class="label">Contratante</div><div class="value">{{ client.name }}</div></div>
+        <div class="field half"><div class="label">Domicilio</div><div class="value">{{ client.address|value_or_line }}</div></div>
+        <div class="field"><div class="label">RUT</div><div class="value">{{ client.rut }}</div></div>
+        <div class="field"><div class="label">Teléfono</div><div class="value">{{ client.phone|value_or_line }}</div></div>
+        <div class="field"><div class="label">Ocupación</div><div class="value">{{ client.occupation|value_or_line }}</div></div>
+        <div class="field"><div class="label">Parentesco</div><div class="value">{{ client.relationship|value_or_line }}</div></div>
+        <div class="field half"><div class="label">Correo electrónico</div><div class="value">{{ client.email|value_or_line }}</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Datos del fallecido</h2>
+      <div class="fields">
+        <div class="field half"><div class="label">Fallecido</div><div class="value">{{ client.deceased_name|value_or_line }}</div></div>
+        <div class="field half"><div class="label">Domicilio</div><div class="value">{{ client.deceased_address|value_or_line }}</div></div>
+        <div class="field"><div class="label">RUT</div><div class="value">{{ client.deceased_rut|value_or_line }}</div></div>
+        <div class="field"><div class="label">Nacido en</div><div class="value">{{ client.birth_place|value_or_line }}</div></div>
+        <div class="field"><div class="label">Edad</div><div class="value">{{ client.age|default:'—' }}</div></div>
+        <div class="field"><div class="label">Estado civil</div><div class="value">{{ client.marital_status|value_or_line }}</div></div>
+        <div class="field"><div class="label">Estudios</div><div class="value">{{ client.education|value_or_line }}</div></div>
+        <div class="field"><div class="label">Previsión</div><div class="value">{{ client.insurance|value_or_line }}</div></div>
+        <div class="field"><div class="label">Fecha nacimiento</div><div class="value">{{ client.birth_date|date:'d/m/Y'|default:'—' }}</div></div>
+        <div class="field"><div class="label">Fecha fallecimiento</div><div class="value">{{ client.death_date|date:'d/m/Y'|default:'—' }}</div></div>
+        <div class="field"><div class="label">Hora</div><div class="value">{{ client.death_time|time:'H:i'|default:'—' }}</div></div>
+        <div class="field half"><div class="label">Lugar fallecimiento</div><div class="value">{{ client.death_place|value_or_line }}</div></div>
+        <div class="field half"><div class="label">Lugar de inscripción</div><div class="value">{{ client.registration_place|value_or_line }}</div></div>
+        <div class="field full"><div class="label">Nombre de los padres</div><div class="value">{{ client.parents|value_or_line }}</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Servicio y ceremonia</h2>
+      <div class="fields">
+        <div class="field"><div class="label">Tipo de urna</div><div class="value">{{ client.urn_type|value_or_line }}</div></div>
+        <div class="field"><div class="label">Traslado al cementerio</div><div class="value">{{ client.cemetery_transfer|value_or_line }}</div></div>
+        <div class="field half"><div class="label">Lugar de velación</div><div class="value">{{ client.wake_place|value_or_line }}</div></div>
+        <div class="field"><div class="label">Fecha misa</div><div class="value">{{ client.mass_date|date:'d/m/Y'|default:'—' }}</div></div>
+        <div class="field"><div class="label">Hora</div><div class="value">{{ client.mass_time|time:'H:i'|default:'—' }}</div></div>
+        <div class="field half"><div class="label">Iglesia</div><div class="value">{{ client.church|value_or_line }}</div></div>
+        <div class="field"><div class="label">Automóvil</div><div class="value">{{ client.automobile|value_or_line }}</div></div>
+        <div class="field"><div class="label">Pagado por</div><div class="value">{{ client.automobile_paid_by|value_or_line }}</div></div>
+        <div class="field"><div class="label">Microbús</div><div class="value">{{ client.minibus|value_or_line }}</div></div>
+        <div class="field"><div class="label">Pagado por</div><div class="value">{{ client.minibus_paid_by|value_or_line }}</div></div>
+      </div>
+      <table>
+        <thead><tr><th>Concepto</th><th>Detalle</th><th class="money">Valor</th></tr></thead>
+        <tbody>
+          <tr><td>Servicio funerario</td><td>{{ client.service_description|default:'—' }}</td><td class="money">{{ client.service_net|clp }}</td></tr>
+          <tr><td>IVA {{ client.vat_rate|floatformat:'0' }}%</td><td></td><td class="money">{{ client.vat_amount|clp }}</td></tr>
+          <tr class="total-row"><td colspan="2">Total del servicio</td><td class="money">{{ client.service_total|clp }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <div class="legal"><strong>Texto legal:</strong> El contratante se hace responsable de la cancelación total de la deuda adquirida por el servicio funerario.</div>
+    <div class="place-date"><div class="field half"><div class="label">Lugar</div><div class="value">{{ client.contract_place|default:'Limache' }}</div></div><div class="field half"><div class="label">Fecha</div><div class="value">{{ client.contract_date|date:'d \d\e F \d\e Y'|default:'—' }}</div></div></div>
+    <div class="signatures"><div class="signature"><strong>{{ client.seller_name|default:'VENDEDOR' }}</strong><br>VENDEDOR</div><div class="signature"><strong>{{ client.name }}</strong><br>CONTRATANTE</div></div>
+  </main>
+</article>
+
+<article class="page">
+  <header class="masthead">
+    <div class="brand"><img src="{% if pdf_mode %}{{ logo_uri }}{% else %}{% static 'img/logo.png' %}{% endif %}" alt="Logo"><div><h1>Entrega de Documentos y Registro de Pagos</h1><small>Complemento del contrato de servicios funerarios</small></div></div>
+    <div class="facts"><span class="chip">Folio: {{ client.folio }}</span></div>
+  </header>
+  <main class="content">
+    <section class="section">
+      <h2 class="section-title">Entrega de documentos</h2>
+      <div class="line-item"><strong>Se entregan los documentos a:</strong> {{ client.documents_recipient|value_or_line }}</div>
+      <div class="line-item"><strong>Parentesco:</strong> {{ client.documents_relationship|value_or_line }} &nbsp;&nbsp; <strong>Fecha:</strong> {{ client.documents_date|date:'d/m/Y'|default:'________________' }}</div>
+      <div class="line-item"><strong>Detalle:</strong> {{ client.documents_detail|value_or_line }}</div>
+      <div class="signatures"><div></div><div class="signature">FIRMA RECEPTOR</div></div>
+    </section>
+
+    <section class="section">
+      <h2 class="section-title">Pagos del contrato</h2>
+      <table>
+        <thead><tr><th>Fecha abono</th><th class="money">Valor</th><th class="money">Saldo</th><th>N° recibo</th></tr></thead>
+        <tbody>
+          {% for payment, running_balance in payments_with_balance %}
+            <tr><td>{{ payment.payment_date|date:'d/m/Y' }}</td><td class="money">{{ payment.amount|clp }}</td><td class="money">{{ running_balance|clp }}</td><td>{{ payment.receipt_number|default:'—' }}</td></tr>
+          {% empty %}
+            <tr><td colspan="4" style="height:30px"></td></tr><tr><td colspan="4" style="height:30px"></td></tr><tr><td colspan="4" style="height:30px"></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <div class="payment-summary"><span>Total deuda: {{ client.service_total|clp }}</span><span>Pagado: {{ client.paid_total|clp }}</span><span>Saldo: {{ client.balance|clp }}</span></div>
+      <div class="observations"><strong>Observaciones:</strong><br>{{ client.observations|default:'' }}</div>
+    </section>
+  </main>
+</article>
+</body>
+</html>

@@ -1,0 +1,10 @@
+[Unit]
+Description=Respaldo del sistema funerario
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/sistema-funerario
+Environment=PROJECT_DIR=/opt/sistema-funerario
+ExecStart=/opt/sistema-funerario/deploy/scripts/backup.sh
