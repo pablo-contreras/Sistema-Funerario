@@ -227,7 +227,7 @@ sudo docker compose logs --tail=80 web
 Abra en Chrome:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 Pruebe:
@@ -312,7 +312,7 @@ flowchart TD
 Desde Windows PowerShell:
 
 ```powershell
-scp "C:\proyectos\sistema-funerario-final.zip" funerariaadmin@192.168.0.22:/tmp/
+scp "C:\proyectos\sistema-funerario-final.zip" funerariaadmin@192.168.1.50:/tmp/
 ```
 
 Si está fuera de la red y usa Tailscale, puede usar la IP o nombre Tailscale del servidor.
@@ -320,7 +320,7 @@ Si está fuera de la red y usa Tailscale, puede usar la IP o nombre Tailscale de
 Luego entre por SSH:
 
 ```powershell
-ssh funerariaadmin@192.168.0.22
+ssh funerariaadmin@192.168.1.50
 ```
 
 ## Paso 2: Respaldo de Emergencia
@@ -483,13 +483,13 @@ sudo docker compose logs --tail=100 db
 Abra:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 Y si usa Tailscale:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 Pruebe:

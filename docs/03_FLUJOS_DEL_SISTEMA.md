@@ -524,5 +524,5 @@ sudo tailscale serve --bg http://127.0.0.1:8080
 Dirección:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```

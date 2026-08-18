@@ -18,7 +18,7 @@ No abrir el puerto 8080 en el router hacia Internet.
 En red local:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 Este acceso debe estar disponible solo para equipos conectados a la red de la funeraria.
@@ -30,7 +30,7 @@ Se configuró Tailscale Serve.
 URL:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 Tailscale permite que solo dispositivos autorizados entren al servidor.
@@ -90,7 +90,7 @@ sudo tailscale serve status
 4. Abrir:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 ## Instalar Tailscale en Celular
@@ -106,7 +106,7 @@ https://servidor-funeraria.taild7534a.ts.net/
 7. Entrar a:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 ### iPhone
@@ -124,8 +124,8 @@ https://servidor-funeraria.taild7534a.ts.net/
 En `.env` debe aparecer el dominio de Tailscale:
 
 ```text
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.22,servidor-funeraria.taild7534a.ts.net
-DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.taild7534a.ts.net
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.50,servidor-funeraria.example.ts.net
+DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.example.ts.net
 ```
 
 Después de cambiar `.env`:
@@ -145,7 +145,7 @@ DJANGO_SECURE_COOKIES=True
 
 Esto hace que las cookies de sesión y CSRF se envíen solo por HTTPS.
 
-Si también necesita entrar por `http://192.168.0.22:8080`, deje:
+Si también necesita entrar por `http://192.168.1.50:8080`, deje:
 
 ```text
 DJANGO_SECURE_COOKIES=False
@@ -155,13 +155,13 @@ Porque HTTP local no enviará cookies marcadas como seguras.
 
 ## Firewall UFW
 
-Reglas recomendadas si la red local es `192.168.0.0/24`:
+Reglas recomendadas si la red local es `192.168.1.0/24`:
 
 ```bash
 sudo ufw default deny incoming
 sudo ufw default allow outgoing
-sudo ufw allow from 192.168.0.0/24 to any port 22 proto tcp
-sudo ufw allow from 192.168.0.0/24 to any port 8080 proto tcp
+sudo ufw allow from 192.168.1.0/24 to any port 22 proto tcp
+sudo ufw allow from 192.168.1.0/24 to any port 8080 proto tcp
 sudo ufw enable
 sudo ufw status verbose
 ```
@@ -196,13 +196,13 @@ sudo docker compose exec web python manage.py changepassword usuario
 URL local:
 
 ```text
-http://192.168.0.22:8080/admin/
+http://192.168.1.50:8080/admin/
 ```
 
 URL Tailscale:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/admin/
+https://servidor-funeraria.example.ts.net/admin/
 ```
 
 Desde ahí se puede gestionar:

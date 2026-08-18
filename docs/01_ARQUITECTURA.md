@@ -191,7 +191,7 @@ Ejemplo: abrir la lista de clientes.
 
 ```text
 1. Usuario abre Chrome.
-2. Chrome solicita http://192.168.0.22:8080/
+2. Chrome solicita http://192.168.1.50:8080/
 3. Nginx recibe la solicitud.
 4. Nginx la envía a Django/Gunicorn.
 5. Django verifica si el usuario inició sesión.
@@ -237,7 +237,7 @@ Por eso se eligió:
 En red local se usa:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 ### Fuera de la red
@@ -245,7 +245,7 @@ http://192.168.0.22:8080
 Para acceso remoto se usa Tailscale Serve:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 Tailscale Serve es privado para dispositivos autorizados en la cuenta de Tailscale. No es lo mismo que Tailscale Funnel, que publicaría el servicio hacia Internet.

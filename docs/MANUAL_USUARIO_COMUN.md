@@ -32,13 +32,13 @@ Abra Google Chrome y escriba la dirección del sistema.
 En la red local:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 Si está fuera de la red y usa Tailscale:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 Aparecerá la pantalla de ingreso.

@@ -141,7 +141,7 @@ Ejemplo de `.env` para red local:
 DJANGO_SECRET_KEY=clave-larga-generada
 DJANGO_DEBUG=False
 DJANGO_SECURE_COOKIES=False
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.22
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.50
 DJANGO_CSRF_TRUSTED_ORIGINS=
 POSTGRES_DB=funeraria
 POSTGRES_USER=funeraria
@@ -155,8 +155,8 @@ BACKUP_DIR=/mnt/funeraria-backups
 Ejemplo agregando Tailscale:
 
 ```text
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.22,servidor-funeraria.taild7534a.ts.net
-DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.taild7534a.ts.net
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.50,servidor-funeraria.example.ts.net
+DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.example.ts.net
 ```
 
 ## Levantar el Sistema
@@ -197,13 +197,13 @@ Ese usuario permite:
 En red local:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 Por Tailscale:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 ## Comandos de Operación Diaria
@@ -310,7 +310,7 @@ sudo mount -a
 URL:
 
 ```text
-http://192.168.0.22:8080/admin/
+http://192.168.1.50:8080/admin/
 ```
 
 Desde ahí se puede:
@@ -378,7 +378,7 @@ sudo docker compose exec web python manage.py changepassword nombre_usuario
 Editar `.env`:
 
 ```text
-DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.taild7534a.ts.net
+DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.example.ts.net
 ```
 
 Luego:
@@ -400,5 +400,5 @@ tailscale status
 Abrir en Chrome:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```

@@ -64,8 +64,8 @@ Diagrama de servicios:
 ```text
 Usuario
   |
-  | http://192.168.0.22:8080
-  | https://servidor-funeraria.taild7534a.ts.net/
+  | http://192.168.1.50:8080
+  | https://servidor-funeraria.example.ts.net/
   v
 Nginx
   |
@@ -152,7 +152,7 @@ Esta sección explica la operación diaria y tareas de mantenimiento.
 Desde Windows PowerShell:
 
 ```powershell
-ssh funerariaadmin@192.168.0.22
+ssh funerariaadmin@192.168.1.50
 ```
 
 Si está fuera de la red y Tailscale está activo, puede usar la IP o nombre Tailscale.
@@ -177,13 +177,13 @@ nginx    Up
 En red local:
 
 ```text
-http://192.168.0.22:8080
+http://192.168.1.50:8080
 ```
 
 Por Tailscale:
 
 ```text
-https://servidor-funeraria.taild7534a.ts.net/
+https://servidor-funeraria.example.ts.net/
 ```
 
 ### 4.4 Ver Logs
@@ -268,7 +268,7 @@ sudo docker compose exec web python manage.py changepassword nombre_usuario
 URL:
 
 ```text
-http://192.168.0.22:8080/admin/
+http://192.168.1.50:8080/admin/
 ```
 
 Permite administrar:
@@ -430,7 +430,7 @@ sudo mv sistema-funerario "sistema-funerario_roto_$STAMP"
 Desde Windows:
 
 ```powershell
-scp "C:\proyectos\sistema-funerario-final.zip" funerariaadmin@192.168.0.22:/tmp/
+scp "C:\proyectos\sistema-funerario-final.zip" funerariaadmin@192.168.1.50:/tmp/
 ```
 
 En el servidor:
@@ -799,13 +799,13 @@ requirements.txt
 En `.env`:
 
 ```text
-DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.0.22,servidor-funeraria.taild7534a.ts.net
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1,192.168.1.50,servidor-funeraria.example.ts.net
 ```
 
 ### 8.3 CSRF por Tailscale
 
 ```text
-DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.taild7534a.ts.net
+DJANGO_CSRF_TRUSTED_ORIGINS=https://servidor-funeraria.example.ts.net
 ```
 
 ### 8.4 No Exponer a Internet
