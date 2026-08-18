@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  Sistema web para la administración integral de clientes, servicios funerarios, pagos, contratos y documentación.
+  <strong>Sistema web para la administración integral de clientes, servicios funerarios, pagos, contratos y documentación.</strong>
 </p>
 
 ---
@@ -16,7 +16,7 @@ El **Sistema de Gestión Funeraria** es una aplicación web desarrollada para ce
 
 La plataforma permite gestionar fichas de clientes, información del fallecido, antecedentes del servicio, contratos, pagos, documentos y saldos pendientes desde una interfaz centralizada.
 
-El sistema fue diseñado con una arquitectura preparada para funcionar tanto en un entorno local como en un servidor de producción, utilizando tecnologías de desarrollo web, base de datos relacional, contenedores y servidor proxy.
+El sistema cuenta con una arquitectura preparada para funcionar tanto en entornos locales de desarrollo como en servidores de producción, incorporando base de datos relacional, contenedores, proxy inverso, mecanismos de respaldo y herramientas de administración.
 
 ---
 
@@ -34,7 +34,7 @@ El sistema fue diseñado con una arquitectura preparada para funcionar tanto en 
 
 ### Información del fallecido
 
-Permite registrar antecedentes como:
+El sistema permite registrar antecedentes como:
 
 * nombre;
 * RUT;
@@ -52,7 +52,7 @@ Permite registrar antecedentes como:
 
 ### Gestión del servicio funerario
 
-El sistema permite registrar información relacionada con la prestación del servicio, incluyendo:
+Permite registrar información asociada a la prestación del servicio, incluyendo:
 
 * tipo de urna;
 * traslado al cementerio;
@@ -71,16 +71,16 @@ El sistema permite registrar información relacionada con la prestación del ser
 * Cálculo automático de IVA.
 * Cálculo del valor total.
 * Registro de múltiples pagos o abonos.
-* Número de recibo por pago.
+* Número de recibo asociado a cada pago.
 * Historial de pagos.
 * Cálculo automático del total pagado.
 * Cálculo del saldo pendiente.
 
 ### Gestión documental
 
-Cada cliente dispone de una carpeta documental independiente.
+Cada cliente dispone de un espacio independiente para almacenar documentación asociada a su ficha.
 
-El sistema permite almacenar documentos asociados a diferentes categorías:
+El sistema permite gestionar documentos de distintas categorías:
 
 * contratos;
 * certificados;
@@ -116,15 +116,15 @@ XLS / XLSX
 
 ### Respaldos
 
-El proyecto incluye herramientas para realizar respaldos de:
+El proyecto incorpora herramientas para respaldar:
 
 * base de datos PostgreSQL;
 * documentos almacenados;
 * configuración del sistema.
 
-Los respaldos incorporan verificación mediante sumas `SHA256`.
+Los respaldos incluyen mecanismos de verificación mediante sumas `SHA256`.
 
-También se incluyen scripts para:
+También se incluyen scripts destinados a:
 
 * generar respaldos;
 * restaurar respaldos;
@@ -136,7 +136,7 @@ También se incluyen scripts para:
 
 ### Backend
 
-* **Python**
+* **Python 3**
 * **Django 5.2**
 * **Gunicorn**
 
@@ -147,30 +147,30 @@ También se incluyen scripts para:
 
 ### Frontend
 
-* HTML5
-* CSS3
-* Django Templates
+* **HTML5**
+* **CSS3**
+* **Django Templates**
 
 ### Infraestructura
 
-* Docker
-* Docker Compose
-* Nginx
-* Ubuntu Server
-* systemd
+* **Docker**
+* **Docker Compose**
+* **Nginx**
+* **Ubuntu Server**
+* **systemd**
 
 ### Generación de documentos
 
-* ReportLab
-* WeasyPrint
+* **ReportLab**
+* **WeasyPrint**
 
 ### Seguridad y acceso remoto
 
-* Autenticación Django
-* Protección CSRF
-* Cookies configurables para HTTPS
-* Nginx como proxy inverso
-* Tailscale como alternativa de acceso remoto privado
+* Autenticación de Django.
+* Protección CSRF.
+* Cookies configurables para HTTPS.
+* Nginx como proxy inverso.
+* Tailscale como alternativa de acceso remoto privado.
 
 ---
 
@@ -215,16 +215,16 @@ En producción, Docker Compose administra los principales servicios:
 └────────────────────────────────────┘
 ```
 
-Nginx recibe las solicitudes HTTP y las deriva a la aplicación Django ejecutada mediante Gunicorn.
+**Nginx** recibe las solicitudes HTTP y las deriva hacia la aplicación Django ejecutada mediante **Gunicorn**.
 
-Django administra la lógica del sistema y se comunica con PostgreSQL para almacenar la información persistente.
+**Django** administra la lógica del sistema y se comunica con **PostgreSQL** para almacenar la información persistente.
 
 ---
 
 ## Estructura del proyecto
 
 ```text
-sistema-funerario-final/
+Sistema-Funerario/
 │
 ├── clientes/
 │   ├── migrations/
@@ -311,13 +311,13 @@ Para desarrollo local también es posible utilizar Python directamente.
 git clone https://github.com/pablo-contreras/Sistema-Funerario.git
 ```
 
-Ingresar al proyecto:
+Ingresar al directorio del proyecto:
 
 ```bash
 cd Sistema-Funerario
 ```
 
-### 2. Crear archivo de configuración
+### 2. Crear el archivo de configuración
 
 Copiar el archivo de ejemplo:
 
@@ -325,12 +325,12 @@ Copiar el archivo de ejemplo:
 cp .env.example .env
 ```
 
-Editar `.env` y establecer valores propios para el entorno.
+Editar posteriormente `.env` y establecer valores propios para el entorno.
 
 Ejemplo:
 
 ```env
-DJANGO_SECRET_KEY=CLAVE-SEGURA-PARA-PRODUCCION
+DJANGO_SECRET_KEY=CAMBIE-ESTA-CLAVE-POR-UNA-SEGURA
 DJANGO_DEBUG=False
 
 POSTGRES_DB=funeraria
@@ -341,7 +341,7 @@ POSTGRES_HOST=db
 POSTGRES_PORT=5432
 ```
 
-> El archivo `.env` contiene información sensible y no debe almacenarse en el repositorio.
+> **Importante:** el archivo `.env` contiene información sensible y no debe almacenarse en el repositorio.
 
 ### 3. Construir e iniciar los contenedores
 
@@ -349,13 +349,13 @@ POSTGRES_PORT=5432
 docker compose up -d --build
 ```
 
-### 4. Comprobar los servicios
+### 4. Comprobar el estado de los servicios
 
 ```bash
 docker compose ps
 ```
 
-### 5. Crear usuario administrador
+### 5. Crear un usuario administrador
 
 ```bash
 docker compose exec web python manage.py createsuperuser
@@ -363,13 +363,13 @@ docker compose exec web python manage.py createsuperuser
 
 ### 6. Acceder al sistema
 
-El despliegue predeterminado publica el servicio mediante:
+El despliegue predeterminado puede ser consultado mediante:
 
 ```text
 http://localhost:8080
 ```
 
-En una instalación dentro de una red local puede utilizarse:
+En una instalación dentro de una red local:
 
 ```text
 http://IP-DEL-SERVIDOR:8080
@@ -428,31 +428,31 @@ El panel administrativo de Django se encuentra disponible en:
 /admin/
 ```
 
-Su utilización debe reservarse a usuarios autorizados.
+Su utilización debe reservarse exclusivamente para usuarios autorizados.
 
 ---
 
 ## Seguridad
 
-El proyecto incorpora diferentes medidas de seguridad.
+El proyecto incorpora diferentes medidas destinadas a proteger la información y limitar el acceso al sistema.
 
 ### Autenticación
 
-Las funciones del sistema requieren autenticación de usuario.
+Las principales funciones de la aplicación requieren autenticación de usuario.
 
 ### Contraseñas
 
-Se utilizan los validadores integrados de Django para impedir contraseñas excesivamente débiles.
+Se utilizan los validadores integrados de Django para impedir el uso de contraseñas excesivamente débiles.
 
 ### Protección CSRF
 
-Django protege las operaciones realizadas mediante formularios contra ataques de tipo Cross-Site Request Forgery.
+Django protege las operaciones realizadas mediante formularios contra ataques de tipo **Cross-Site Request Forgery**.
 
 ### Protección contra Clickjacking
 
 El sistema utiliza:
 
-```text
+```python
 X_FRAME_OPTIONS = "DENY"
 ```
 
@@ -460,46 +460,52 @@ X_FRAME_OPTIONS = "DENY"
 
 También se encuentra habilitada:
 
-```text
+```python
 SECURE_CONTENT_TYPE_NOSNIFF = True
 ```
 
 ### Variables sensibles
 
-Las contraseñas, claves y parámetros privados deben almacenarse en `.env`.
-
-El archivo real:
+Las contraseñas, claves y parámetros privados deben almacenarse mediante variables de entorno en:
 
 ```text
 .env
 ```
 
-está excluido del control de versiones mediante `.gitignore`.
+El archivo `.env` real está excluido del control de versiones mediante `.gitignore`.
+
+El repositorio contiene únicamente:
+
+```text
+.env.example
+```
+
+como referencia para configurar una instalación nueva.
 
 ### Acceso remoto
 
-Para una instalación real no se recomienda publicar directamente el puerto de la aplicación hacia Internet.
+Para una instalación real no se recomienda publicar directamente el puerto interno de la aplicación hacia Internet.
 
-Cuando se requiere acceso remoto privado puede utilizarse una solución VPN como Tailscale.
+Cuando se requiere acceso remoto privado puede utilizarse una solución VPN como **Tailscale**.
 
 ---
 
 ## Respaldos y restauración
 
-El sistema incorpora:
+El sistema incorpora los siguientes scripts:
 
 ```text
 deploy/scripts/backup.sh
 deploy/scripts/restore.sh
 ```
 
-### Crear respaldo manual
+### Crear un respaldo manual
 
 ```bash
 sudo ./deploy/scripts/backup.sh
 ```
 
-El respaldo puede contener:
+Un respaldo puede incluir:
 
 ```text
 base-datos.dump
@@ -510,45 +516,57 @@ SHA256SUMS
 
 ### Verificación de integridad
 
-Los respaldos utilizan hashes SHA256 para comprobar que los archivos no hayan sido modificados o dañados.
+Los respaldos utilizan hashes **SHA256** para comprobar que los archivos no hayan sido modificados o dañados.
 
-### Restaurar
+### Restaurar un respaldo
 
 ```bash
 sudo ./deploy/scripts/restore.sh /ruta/del/respaldo
 ```
 
-> Antes de realizar una restauración se recomienda generar un respaldo del estado actual.
+> Antes de realizar cualquier restauración se recomienda generar un respaldo del estado actual del sistema.
 
 ---
 
 ## Pruebas
 
-El proyecto incluye pruebas automatizadas.
+El proyecto incluye pruebas automatizadas utilizando el sistema de pruebas integrado de Django.
 
-Para ejecutarlas:
-
-```bash
-pytest
-```
-
-También pueden ejecutarse dentro del contenedor:
+### Ejecutar pruebas en desarrollo
 
 ```bash
-docker compose exec web pytest
+python manage.py test
 ```
 
-La configuración de pytest se encuentra en:
+### Ejecutar pruebas mediante Docker
+
+```bash
+docker compose exec web python manage.py test
+```
+
+### Verificar la configuración de Django
+
+```bash
+python manage.py check
+```
+
+Las pruebas principales se encuentran en:
 
 ```text
-pytest.ini
+tests/test_system.py
 ```
 
 ---
 
 ## Documentación
 
-El repositorio incluye documentación técnica y de usuario.
+El repositorio incluye documentación técnica y documentación destinada al usuario final.
+
+### Índice general
+
+[docs/00_INDICE.md](docs/00_INDICE.md)
+
+Índice de la documentación disponible en el proyecto.
 
 ### Arquitectura
 
@@ -590,57 +608,49 @@ Medidas de seguridad recomendadas para la operación del sistema.
 
 [docs/07_DESARROLLO_PRUEBAS.md](docs/07_DESARROLLO_PRUEBAS.md)
 
-Información para continuar desarrollando y probando la aplicación.
+Información destinada a continuar desarrollando y verificando la aplicación.
 
-### Recuperación ante fallas
+### Respaldos y falla crítica
 
 [docs/08_RESPALDOS_Y_FALLA_CRITICA.md](docs/08_RESPALDOS_Y_FALLA_CRITICA.md)
 
-Procedimientos para responder ante fallas críticas.
+Procedimientos de recuperación y actuación frente a fallas críticas.
 
 ### Manual técnico
 
 [docs/MANUAL_TECNICO_PROGRAMADOR_ADMINISTRADOR.md](docs/MANUAL_TECNICO_PROGRAMADOR_ADMINISTRADOR.md)
 
-Manual destinado a desarrolladores y administradores.
-
-También disponible en formato PDF:
-
-[docs/manual_tecnico_programador_administrador.pdf](docs/manual_tecnico_programador_administrador.pdf)
+Manual destinado a desarrolladores y administradores del sistema.
 
 ### Manual de usuario
 
 [docs/MANUAL_USUARIO_COMUN.md](docs/MANUAL_USUARIO_COMUN.md)
 
-Guía de utilización destinada al usuario final.
-
-También disponible en formato PDF:
-
-[docs/manual_usuario_comun.pdf](docs/manual_usuario_comun.pdf)
+Guía destinada al uso cotidiano de la aplicación por parte de usuarios finales.
 
 ---
 
 ## Operación del sistema
 
-### Estado de los contenedores
+### Consultar el estado de los contenedores
 
 ```bash
 docker compose ps
 ```
 
-### Logs de Django
+### Consultar logs de Django
 
 ```bash
 docker compose logs -f web
 ```
 
-### Logs de Nginx
+### Consultar logs de Nginx
 
 ```bash
 docker compose logs -f nginx
 ```
 
-### Logs de PostgreSQL
+### Consultar logs de PostgreSQL
 
 ```bash
 docker compose logs -f db
@@ -662,9 +672,9 @@ docker compose up -d --build
 
 ## Persistencia de datos
 
-Los datos de producción se mantienen fuera de los contenedores.
+Los datos utilizados en producción se mantienen fuera del ciclo de vida de los contenedores.
 
-Esto permite reconstruir o actualizar los servicios sin perder:
+Esto permite reconstruir, reiniciar o actualizar los servicios sin perder:
 
 * registros de clientes;
 * pagos;
@@ -672,21 +682,21 @@ Esto permite reconstruir o actualizar los servicios sin perder:
 * documentos;
 * información administrativa.
 
-PostgreSQL mantiene su información en almacenamiento persistente y los documentos se almacenan en un directorio independiente.
+PostgreSQL mantiene su información utilizando almacenamiento persistente y los documentos se almacenan en un directorio independiente.
 
 ---
 
 ## Objetivos del proyecto
 
-El proyecto busca:
+El Sistema de Gestión Funeraria busca:
 
 * digitalizar el registro de servicios funerarios;
-* centralizar información que normalmente se encuentra distribuida;
+* centralizar información operacional;
 * facilitar la consulta de antecedentes;
 * disminuir errores de registro;
 * mantener un historial de pagos;
 * automatizar cálculos financieros;
-* ordenar la documentación de cada cliente;
+* organizar la documentación asociada a cada cliente;
 * disponer de mecanismos de respaldo y recuperación;
 * proporcionar una plataforma administrable y escalable.
 
@@ -694,23 +704,29 @@ El proyecto busca:
 
 ## Estado del proyecto
 
-**Versión estable inicial.**
+### Versión estable inicial
 
 El sistema dispone actualmente de:
 
 * gestión de clientes;
 * gestión de información funeraria;
+* gestión de servicios;
 * gestión de pagos;
-* cálculo de saldos;
+* cálculo automático de saldos;
 * gestión documental;
 * generación de contratos;
-* generación de PDF;
-* autenticación;
-* administración de usuarios;
-* PostgreSQL;
+* generación de documentos PDF;
+* autenticación de usuarios;
+* administración mediante Django Admin;
+* integración con PostgreSQL;
+* entorno de desarrollo mediante SQLite;
 * despliegue con Docker;
+* Docker Compose;
+* Gunicorn;
 * proxy inverso mediante Nginx;
-* respaldos y restauración;
+* persistencia de información;
+* mecanismos de respaldo;
+* mecanismos de restauración;
 * documentación técnica;
 * manual de usuario;
 * pruebas automatizadas.
@@ -721,13 +737,20 @@ El sistema dispone actualmente de:
 
 **Pablo Contreras**
 
-Proyecto desarrollado como solución para la digitalización y administración de procesos asociados a la gestión funeraria.
+Proyecto desarrollado como solución para la digitalización, organización y administración de procesos asociados a la gestión funeraria.
 
 ---
 
-## Aviso
+## Aviso de seguridad
 
-Este repositorio no contiene contraseñas, claves privadas ni credenciales reales de producción.
+Este repositorio no debe contener contraseñas, claves privadas, datos personales reales ni credenciales correspondientes a un entorno de producción.
 
-Los valores incluidos en `.env.example` son únicamente ejemplos de configuración y deben ser reemplazados antes de utilizar el sistema en un entorno real.
+Los valores incluidos en:
 
+```text
+.env.example
+```
+
+son únicamente referencias de configuración y deben ser reemplazados por valores propios antes de utilizar el sistema en un entorno real.
+
+Los datos utilizados para demostraciones, pruebas o capturas del proyecto deben ser ficticios.
